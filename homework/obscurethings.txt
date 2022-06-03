@@ -1,0 +1,2 @@
+-variadic functions/ variadic arguments. (man 3 stdarg)
+-how to use printf with the flags/minimum field width, and the different between some conversion strings. (man 3 printf)
