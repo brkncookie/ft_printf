@@ -1,0 +1,7 @@
+-calculate the count of format strings then retrieve the pointer and length to each format string.
+	1-calculate the count.
+	2-use the count to allocate enough memory for pointer and length.
+-using the informations above, resolve each format string.
+	1-create a function for each conversion specifier.
+	2-each format string will passed to a function based on its conversion specifier.
+-build the string by replacing each format string with the resolved result and print it.
