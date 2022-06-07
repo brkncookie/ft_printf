@@ -1,103 +1,93 @@
 #include "include/ft_printf.h"
 
-int	ft_islegal(char c)
+fsinfo	*ft_fsinfo_init(char	*fmt)
 {
-	char *ff = "0123456789 0-#+.";
-	char *fs = "csdixXup%";
-	while(*ff)
+	fsinfo	*fss;
+	char	*hfmt;
+	long	int	inx;
+
+	fss = malloc(sizeof *fss);
+	if(!fss)
+		return(NULL);
+	fss->cnt = 0;
+	hfmt = fmt;
+
+	while((hfmt = ft_strchr(hfmt, '%')) != NULL)
 	{
-		if(c == *ff)
-			return(1);
-		ff++;
-	}
-	while(*fs)
-	{
-		if(c == *fs)
-			return(2);
-		fs++;
-	}
-	return(0);
-}
-
-char	*ft_str(char *fptr, int	flen, va_list *ap)
-{
-	return(strdup(va_arg(*ap, char *)));
-}
-
-fstr	*ft_fstrinfo(char *fmt)
-{
-	fstr	*finfo;
-	char	*str;
-	char	*fptr;
-	long	int	flen;
-	int 	inx;
-
-	finfo = malloc(sizeof *finfo);
-	finfo->cnt = 0;
-	str = fmt;
-
-	while((str = strchr(str, '%')) != NULL)
-	{
-			str++;
-			while(ft_islegal(*str) && *str)
+		hfmt++;
+		while(ft_isfs(*hfmt))
+		{
+			if(ft_isfs(*hfmt) == 2)
 			{
-				if(ft_islegal(*str) == 2)
-				{
-					finfo->cnt += 1;
-					break;
-				}
-				str++;
+				fss->cnt += 1;
+				break;
 			}
-		if(!(*str))
-			break;
-		str++;
+			hfmt++;
+		}
 	}
 
-	str = fmt;
-	finfo->fptr = malloc(finfo->cnt * sizeof(char *));
-	finfo->flen = malloc(finfo->cnt * sizeof(int));
-	flen = 2;
+	fss->fptr = malloc(fss->cnt * sizeof(char *));
+	fss->flen = malloc(fss->cnt * sizeof(int));
+	if(!(fss->fptr) || !(fss->flen))
+		return(NULL);
+	hfmt = fmt;
 	inx = 0;
 
-
-	while(((str = strchr(str, '%')) != NULL) && inx < finfo->cnt)
+	while((hfmt = ft_strchr(hfmt, '%')) != NULL && inx < fss->cnt)
 	{
-			fptr = str;
-			flen = 2;
-			str++;
-			while(ft_islegal(*str) && *str)
+		fss->fptr[inx] = hfmt;
+		fss->flen[inx] = 2;
+		hfmt++;
+		while(ft_isfs(*hfmt))
+		{
+			if(ft_isfs(*hfmt) == 2)
 			{
-				if(ft_islegal(*str) == 2)
-				{
-					finfo->fptr[inx] = fptr;
-					finfo->flen[inx] = flen;
-					inx++;
-					break;
-				}
-				flen++;
-				str++;
+				inx++;
+				break;
 			}
-		if(!(*str))
-			break;
-		str++;
+			fss->flen[inx] += 1;
+			hfmt++;
+		}
 	}
-	return(finfo);
+
+	return(fss);
 }
 
-char	**ft_resfs(fstr *finfo, va_list *ap)
+char	**ft_resfs(fsinfo *fss, va_list *ap)
 {
-	char	**rfs;
-	int	inx;
+	char		**rfs;
+	long	int	inx;
 
-	rfs = malloc(finfo->cnt * sizeof(*rfs));
+	rfs = malloc(fss->cnt * sizeof(*rfs));
+	if(!rfs)
+		return(NULL);
 	inx = 0;
 
-	while(inx < finfo->cnt)
+	while(inx < fss->cnt)
 	{
-		switch(finfo->fptr[inx][finfo->flen[inx]-1])
+		switch(fss->fptr[inx][fss->flen[inx]-1])
 		{
 			case 's':
-				rfs[inx] = ft_str(finfo->fptr[inx], finfo->flen[inx], ap);
+				rfs[inx] = ft_str(fss->fptr[inx], fss->flen[inx], ap);
+				break;
+			case 'c':
+				rfs[inx] = ft_cha(fss->fptr[inx], fss->flen[inx], ap);
+				break;
+			case 'p':
+				rfs[inx] = ft_ptr(fss->fptr[inx], fss->flen[inx], ap);
+				break;
+			case 'i':
+			case 'd':
+				rfs[inx] = ft_int(fss->fptr[inx], fss->flen[inx], ap);
+				break;
+			case 'x':
+				rfs[inx] = ft_hex(fss->fptr[inx], fss->flen[inx], ap);
+				break;
+			case 'X':
+				rfs[inx] = ft_HEX(fss->fptr[inx], fss->flen[inx], ap);
+				break;
+			case 'u':
+				rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap);
 				break;
 			case '%':
 				rfs[inx] = "%";
@@ -109,76 +99,83 @@ char	**ft_resfs(fstr *finfo, va_list *ap)
 	return(rfs);
 }
 
-char *ft_buildstr(char *fmt, char **rfs, fstr *finfo)
+char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 {
-	int	rslen;
-	char 	*rstr;
-	int	inx;
-	char	*str;
-	char	*rrstr;
+	long	int	rslen;
+	long	int	inx;
+	char		*hfmt;
+	char		*rstr;
 
 	inx = 0;
-	rslen = strlen(fmt);
-	while(inx < finfo->cnt)
+	rslen = (long int)ft_strlen(fmt);
+	while(inx < fss->cnt)
 	{
-		rslen -= finfo->flen[inx];
-		rslen += strlen(rfs[inx]);
+		rslen -= fss->flen[inx];
+		rslen += (long int)ft_strlen(rfs[inx]);
 		inx++;
 	}
 
-	rstr = malloc(rslen * sizeof(*rstr));
-	rrstr = rstr;
+	rstr = malloc((rslen + 1) * sizeof(*rstr));
+	if(!rstr)
+		return(NULL);
 	inx = 0;
-	str = fmt;
-	while(*str)
-	{
-		if(inx < finfo->cnt)
-		{
-			if(str < finfo->fptr[inx])
-			{
-				memcpy(rstr, str, finfo->fptr[inx] - str);
-				rstr += finfo->fptr[inx] - str;
-				str += finfo->fptr[inx] - str;
+	hfmt = fmt;
 
+	while(*hfmt)
+	{
+		if(inx < fss->cnt)
+			if(hfmt < fss->fptr[inx])
+			{
+				ft_memcpy(rstr, hfmt, fss->fptr[inx] - hfmt);
+				rstr += fss->fptr[inx] - hfmt;
+				hfmt += fss->fptr[inx] - hfmt;
 			}
 			else
 			{
-				memcpy(rstr, rfs[inx], strlen(rfs[inx]));
-				str += finfo->flen[inx];
-				rstr += strlen(rfs[inx]);
+				ft_memcpy(rstr, rfs[inx], ft_strlen(rfs[inx]);
+				rstr += ft_strlen(rfs[inx]);
+				hfmt += fss->flen[inx];
 				inx++;
 			}
-		}
 		else
 		{
-		memcpy(rstr, str, strlen(str));
-		rstr += strlen(str);
-		str += strlen(str);
+			ft_memcpy(rstr, hfmt, ft_strlen(hfmt));
+			rstr += ft_strlen(hfmt);
+			hfmt += ft_strlen(hfmt);
 		}
+		*rstr = 0;
+		return(rstr - rslen);
 	}
-	*rstr = 0;
-	return(rrstr);
 }
 
 int ft_printf(char *fmt, ...)
 {
-	va_list	ap;
-	fstr	*finfo;
 	char	**rfs;
 	char	*rstr;
+	fsinfo	*fss;
+	va_list	ap;
 
+	fss = ft_fsinfo_init(fmt);
+	if(!fss)
+		return(-1);
+	if(fss->cnt == 0)
+	{
+		free(fss);
+		write(stdout, fmt, ft_strlen(fmt));
+		return(ft_strlen(fmt));
+	}
 
 	va_start(ap, fmt);
+	rfs = ft_resfs(fss, &ap);
+	if(!rfs)
+		return(-2);
 
-	finfo = ft_fstrinfo(fmt);
-	rfs = ft_resfs(finfo, &ap);
-	rstr = ft_buildstr(fmt, rfs, finfo);
-
-	printf("%s", rstr);
+	rstr = ft_buildstr(fmt, rfs, fss);
+	if(!rstr)
+		return(-3);
 	va_end(ap);
 
-	/* for(int i = 0; i < finfo->cnt; i++) */
-	/* 	printf("string: %s\n", rfs[i]); */
-	return(0);
+	write(stdout, rstr, ft_strlen(rstr));
+	return(ft_strlen(rstr));
 }
 

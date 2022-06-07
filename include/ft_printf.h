@@ -7,15 +7,15 @@
 #include <unistd.h>
 #include <stdarg.h>
 
-typedef struct s_fstr
+typedef struct s_fsinfo
 {
-	char	**fptr;
+	char		**fptr;
 	long	int	*flen;
-	int	cnt;
-}	fstr;
+	long	int	cnt;
+}	fsinfo;
 
 int	ft_islegal(char c);
-fstr *ft_fstrinfo(char *fmt);
+fsinfo *ft_fsinfoinfo(char *fmt);
 int ft_printf(char *fmt, ...);
 #endif
 
