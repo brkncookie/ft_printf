@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	/* for(inx = 0; inx < fc->cnt; inx++) */
 	/* 	printf("format string: '%.*s' length: %d\n", fc->flen[inx], fc->fptr[inx], fc->flen[inx]); */
 
-	ft_printf(argv[1], argv[2], argv[3]);
+	ft_printf(argv[1], argv[2], argv[3], argv[4]);
 	/* printf(argv[1], argv[2], argv[3]); */
 
 	return(0);

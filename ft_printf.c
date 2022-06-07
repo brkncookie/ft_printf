@@ -70,25 +70,25 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 			case 's':
 				rfs[inx] = ft_str(fss->fptr[inx], fss->flen[inx], ap);
 				break;
-			case 'c':
-				rfs[inx] = ft_cha(fss->fptr[inx], fss->flen[inx], ap);
-				break;
-			case 'p':
-				rfs[inx] = ft_ptr(fss->fptr[inx], fss->flen[inx], ap);
-				break;
-			case 'i':
-			case 'd':
-				rfs[inx] = ft_int(fss->fptr[inx], fss->flen[inx], ap);
-				break;
-			case 'x':
-				rfs[inx] = ft_hex(fss->fptr[inx], fss->flen[inx], ap);
-				break;
-			case 'X':
-				rfs[inx] = ft_HEX(fss->fptr[inx], fss->flen[inx], ap);
-				break;
-			case 'u':
-				rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap);
-				break;
+			/* case 'c': */
+			/* 	rfs[inx] = ft_cha(fss->fptr[inx], fss->flen[inx], ap); */
+			/* 	break; */
+			/* case 'p': */
+			/* 	rfs[inx] = ft_ptr(fss->fptr[inx], fss->flen[inx], ap); */
+			/* 	break; */
+			/* case 'i': */
+			/* case 'd': */
+			/* 	rfs[inx] = ft_int(fss->fptr[inx], fss->flen[inx], ap); */
+			/* 	break; */
+			/* case 'x': */
+			/* 	rfs[inx] = ft_hex(fss->fptr[inx], fss->flen[inx], ap); */
+			/* 	break; */
+			/* case 'X': */
+			/* 	rfs[inx] = ft_HEX(fss->fptr[inx], fss->flen[inx], ap); */
+			/* 	break; */
+			/* case 'u': */
+			/* 	rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap); */
+			/* 	break; */
 			case '%':
 				rfs[inx] = "%";
 				break;
@@ -124,6 +124,7 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 	while(*hfmt)
 	{
 		if(inx < fss->cnt)
+		{
 			if(hfmt < fss->fptr[inx])
 			{
 				ft_memcpy(rstr, hfmt, fss->fptr[inx] - hfmt);
@@ -132,20 +133,21 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 			}
 			else
 			{
-				ft_memcpy(rstr, rfs[inx], ft_strlen(rfs[inx]);
+				ft_memcpy(rstr, rfs[inx], ft_strlen(rfs[inx]));
 				rstr += ft_strlen(rfs[inx]);
 				hfmt += fss->flen[inx];
 				inx++;
 			}
+		}
 		else
 		{
 			ft_memcpy(rstr, hfmt, ft_strlen(hfmt));
 			rstr += ft_strlen(hfmt);
 			hfmt += ft_strlen(hfmt);
 		}
-		*rstr = 0;
-		return(rstr - rslen);
 	}
+	*rstr = 0;
+	return(rstr - rslen);
 }
 
 int ft_printf(char *fmt, ...)
@@ -161,7 +163,7 @@ int ft_printf(char *fmt, ...)
 	if(fss->cnt == 0)
 	{
 		free(fss);
-		write(stdout, fmt, ft_strlen(fmt));
+		write(1, fmt, ft_strlen(fmt));
 		return(ft_strlen(fmt));
 	}
 
@@ -175,7 +177,7 @@ int ft_printf(char *fmt, ...)
 		return(-3);
 	va_end(ap);
 
-	write(stdout, rstr, ft_strlen(rstr));
+	write(1, rstr, ft_strlen(rstr));
 	return(ft_strlen(rstr));
 }
 
