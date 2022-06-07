@@ -109,21 +109,76 @@ char	**ft_resfs(fstr *finfo, va_list *ap)
 	return(rfs);
 }
 
+char *ft_buildstr(char *fmt, char **rfs, fstr *finfo)
+{
+	int	rslen;
+	char 	*rstr;
+	int	inx;
+	char	*str;
+	char	*rrstr;
+
+	inx = 0;
+	rslen = strlen(fmt);
+	while(inx < finfo->cnt)
+	{
+		rslen -= finfo->flen[inx];
+		rslen += strlen(rfs[inx]);
+		inx++;
+	}
+
+	rstr = malloc(rslen * sizeof(*rstr));
+	rrstr = rstr;
+	inx = 0;
+	str = fmt;
+	while(*str)
+	{
+		if(inx < finfo->cnt)
+		{
+			if(str < finfo->fptr[inx])
+			{
+				memcpy(rstr, str, finfo->fptr[inx] - str);
+				rstr += finfo->fptr[inx] - str;
+				str += finfo->fptr[inx] - str;
+
+			}
+			else
+			{
+				memcpy(rstr, rfs[inx], strlen(rfs[inx]));
+				str += finfo->flen[inx];
+				rstr += strlen(rfs[inx]);
+				inx++;
+			}
+		}
+		else
+		{
+		memcpy(rstr, str, strlen(str));
+		rstr += strlen(str);
+		str += strlen(str);
+		}
+	}
+	*rstr = 0;
+	return(rrstr);
+}
+
 int ft_printf(char *fmt, ...)
 {
 	va_list	ap;
 	fstr	*finfo;
 	char	**rfs;
+	char	*rstr;
 
 
 	va_start(ap, fmt);
 
 	finfo = ft_fstrinfo(fmt);
 	rfs = ft_resfs(finfo, &ap);
+	rstr = ft_buildstr(fmt, rfs, finfo);
 
-	for(int i = 0; i < finfo->cnt; i++)
-		printf("string: %s\n", rfs[i]);
+	printf("%s", rstr);
 	va_end(ap);
+
+	/* for(int i = 0; i < finfo->cnt; i++) */
+	/* 	printf("string: %s\n", rfs[i]); */
 	return(0);
 }
 
