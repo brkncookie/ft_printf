@@ -75,3 +75,18 @@ char	*ft_strdup(const char *s)
 	return(d);
 }
 
+void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
+{
+	long	int inx;
+
+	inx = 0;
+	while(inx < fss->cnt)
+		free(rfs[inx++]);
+
+	free(rfs);
+	free(fss->fptr);
+	free(fss->flen);
+	free(fss);
+	free(rstr);
+}
+

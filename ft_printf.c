@@ -20,14 +20,15 @@ fsinfo	*ft_fsinfo_init(char	*fmt)
 			if(ft_isfs(*hfmt) == 2)
 			{
 				fss->cnt += 1;
+				hfmt++;
 				break;
 			}
 			hfmt++;
 		}
 	}
 
-	fss->fptr = malloc(fss->cnt * sizeof(char *));
-	fss->flen = malloc(fss->cnt * sizeof(int));
+	fss->fptr = malloc(fss->cnt * sizeof(*(fss->fptr)));
+	fss->flen = malloc(fss->cnt * sizeof(*(fss->flen)));
 	if(!(fss->fptr) || !(fss->flen))
 		return(NULL);
 	hfmt = fmt;
@@ -90,7 +91,7 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 			/* 	rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap); */
 			/* 	break; */
 			case '%':
-				rfs[inx] = "%";
+				rfs[inx] = ft_strdup("%");
 				break;
 		}
 		inx++;
@@ -155,6 +156,7 @@ int ft_printf(char *fmt, ...)
 	char	**rfs;
 	char	*rstr;
 	fsinfo	*fss;
+	int	len;
 	va_list	ap;
 
 	fss = ft_fsinfo_init(fmt);
@@ -178,6 +180,8 @@ int ft_printf(char *fmt, ...)
 	va_end(ap);
 
 	write(1, rstr, ft_strlen(rstr));
-	return(ft_strlen(rstr));
+	len = ft_strlen(rstr);
+	ft_frall(rstr, rfs, fss);
+	return(len);
 }
 

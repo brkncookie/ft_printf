@@ -18,6 +18,7 @@ int 	ft_printf(char *fmt, ...);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
 char	*ft_strchr(const char *s, int c);
+void	ft_frall(char *rstr, char **rfs, fsinfo *fss);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 void	*ft_memcpy(void *restrict dest, const void *restrict src, size_t n);
 
