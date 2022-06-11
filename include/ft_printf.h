@@ -22,7 +22,7 @@ void	ft_frall(char *rstr, char **rfs, fsinfo *fss);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 void	*ft_memcpy(void *restrict dest, const void *restrict src, size_t n);
 
-char	*ft_str(char *fptr, int	flen, va_list *ap);
+char	*ft_str(char *fptr, long int flen, va_list *ap);
 char	*ft_cha(char *fptr, int	flen, va_list *ap);
 char	*ft_ptr(char *fptr, int	flen, va_list *ap);
 char	*ft_int(char *fptr, int	flen, va_list *ap);
