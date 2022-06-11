@@ -37,10 +37,6 @@ int main(void)
 
 	printf("\tPrecision with + flag\n");
 	printf("digit is %+.6d  and integer is %+.6i \n", num, num);
-
-	printf("\tMin Field Width With precision\n");
-	printf("str is %15.7s and char is %2.1c\n", str, *str);
-	printf("str is %--15.7s and char is %-2.1c\n", str, *str);
 	return(0);
 }
 
