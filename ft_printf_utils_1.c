@@ -37,7 +37,6 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 			ft_memcpy(ns, os, ft_strlen(os));
 			*(ns + ft_strlen(os)) = 0;
 			ns -= num - ft_strlen(os);
-			free(os);
 		}
 		else if((num = atoi(fptr+1)) < 0 && (num * -1) > ft_strlen(os))
 		{
@@ -50,9 +49,53 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 				*(ns++) = ' ';
 			*ns = 0;
 			ns -= (ft_strlen(os) + num - ft_strlen(os));
-			free(os);
 		}
 	}
+	if(os != ns)
+		free(os);
 	return(ns);
+}
+
+char	*ft_cha(char *fptr, long int flen, va_list *ap)
+{
+	char	*oc;
+	char	*nc;
+	int	num;
+	int	spc;
+
+	oc = malloc(2 * sizeof(*oc));
+	nc = oc;
+	oc[0] = (unsigned char)va_arg(*ap, int);
+	oc[1] = 0;
+	if(flen > 2)
+	{
+		if((num = atoi(fptr+1)) > 0 && num > ft_strlen(oc))
+		{
+			spc = num - ft_strlen(oc);
+			nc = malloc((num + 1) * sizeof(*nc));
+			while(spc--)
+				*(nc++) = ' ';
+			ft_memcpy(nc, oc, ft_strlen(oc));
+			*(nc + ft_strlen(oc)) = 0;
+			nc -= num - ft_strlen(oc);
+		}
+		else if((num = atoi(fptr+1)) < 0 && (num * -1) > ft_strlen(oc))
+		{
+			num *= -1;
+			spc = num - ft_strlen(oc);
+			nc = malloc((num + 1) * sizeof(*nc));
+			ft_memcpy(nc, oc, ft_strlen(oc));
+			nc += ft_strlen(oc);
+			while(spc--)
+				*(nc++) = ' ';
+			*nc = 0;
+			nc -= (ft_strlen(oc) + num - ft_strlen(oc));
+		}
+
+	}
+	if(oc != nc)
+		free(oc);
+	return(nc);
+
 }
 

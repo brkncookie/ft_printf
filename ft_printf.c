@@ -71,9 +71,9 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 			case 's':
 				rfs[inx] = ft_str(fss->fptr[inx], fss->flen[inx], ap);
 				break;
-			/* case 'c': */
-			/* 	rfs[inx] = ft_cha(fss->fptr[inx], fss->flen[inx], ap); */
-			/* 	break; */
+			case 'c':
+				rfs[inx] = ft_cha(fss->fptr[inx], fss->flen[inx], ap);
+				break;
 			/* case 'p': */
 			/* 	rfs[inx] = ft_ptr(fss->fptr[inx], fss->flen[inx], ap); */
 			/* 	break; */
