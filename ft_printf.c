@@ -77,10 +77,10 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 			/* case 'p': */
 			/* 	rfs[inx] = ft_ptr(fss->fptr[inx], fss->flen[inx], ap); */
 			/* 	break; */
-			/* case 'i': */
-			/* case 'd': */
-			/* 	rfs[inx] = ft_int(fss->fptr[inx], fss->flen[inx], ap); */
-			/* 	break; */
+			case 'i':
+			case 'd':
+				rfs[inx] = ft_int(fss->fptr[inx], fss->flen[inx], ap);
+				break;
 			/* case 'x': */
 			/* 	rfs[inx] = ft_hex(fss->fptr[inx], fss->flen[inx], ap); */
 			/* 	break; */

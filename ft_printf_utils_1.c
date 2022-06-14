@@ -99,3 +99,119 @@ char	*ft_cha(char *fptr, long int flen, va_list *ap)
 
 }
 
+char	*ft_int(char *fptr, long int flen, va_list *ap)
+{
+	/* precision, width, - flag, 0 flag, ' ' flag, + flag */
+	char	*ptr;
+	char	*oi;
+	char	*foi;
+	char	*ni;
+	int	num;
+	int 	pad;
+
+	oi = ft_itoa(va_arg(*ap, int));
+	ni = oi;
+	if(flen > 2)
+	{
+		if((ptr = ft_strchr(fptr, '.')))
+		{
+			num = atoi(ptr+1);
+			foi = oi;
+			if(*oi == '-')
+			{
+				num++;
+				oi++;
+			}
+			if(num > ft_strlen(oi))
+			{
+				pad = num - ft_strlen(oi);
+				ni = malloc((num + 1) * sizeof(*ni));
+				ni[num] = 0;
+				while(pad--)
+					*(ni++) = '0';
+				ft_memcpy(ni, oi, ft_strlen(oi));
+				ni -= num - ft_strlen(oi);
+				if(*foi == '-')
+					*ni = '-';
+				free(foi);
+				oi = ni;
+			}
+
+		}
+		if((ft_strchr(fptr, '+')) && (*oi != '-'))
+		{
+			ni = malloc((ft_strlen(oi) + 2) * sizeof(*ni));
+			*(ni++) = '+';
+			ft_memcpy(ni, oi, ft_strlen(oi));
+			*((ni--) + ft_strlen(oi)) = 0;
+			free(oi);
+			oi = ni;
+
+		}
+		else if((ft_strchr(fptr, ' ')) && (*oi != '-'))
+		{
+			ni = malloc((ft_strlen(oi) + 2) * sizeof(*ni));
+			*(ni++) = ' ';
+			ft_memcpy(ni, oi, ft_strlen(oi));
+			*((ni--) + ft_strlen(oi)) = 0;
+			free(oi);
+			oi = ni;
+		}
+
+		if((ptr = ft_strchr(fptr, '1')) || (ptr = ft_strchr(fptr, '2')) || (ptr = ft_strchr(fptr, '3')) \
+				|| (ptr = ft_strchr(fptr, '4')) || (ptr = ft_strchr(fptr, '5')) || (ptr = ft_strchr(fptr, '6')) \
+				|| (ptr = ft_strchr(fptr, '7')) || (ptr = ft_strchr(fptr, '8')) || (ptr = ft_strchr(fptr, '9')))
+		{
+			num = atoi(ptr);
+			if(num > ft_strlen(oi))
+			{
+				pad = num - ft_strlen(oi);
+				if(ft_strchr(fptr, '-'))
+				{
+					ni = malloc((num + 1) * sizeof(*ni));
+					ni[num] = 0;
+					ft_memcpy(ni, oi, ft_strlen(oi));
+					ni += ft_strlen(oi);
+					while(pad--)
+						*(ni++) = ' ';
+					ni -= (ft_strlen(oi ) + num - ft_strlen(oi ));
+					free(oi);
+					oi = ni;
+					foi = oi;
+
+				}
+				else if(ft_strchr(fptr, '0'))
+				{
+					ni = malloc((num + 1) * sizeof(*ni));
+					ni[num] = 0;
+					foi = oi;
+					if(*oi == '-' || *oi == ' ' || *oi == '+')
+					{
+						ni++;
+						oi++;
+					}
+					while(pad--)
+						*(ni++) = '0';
+					ft_memcpy(ni, oi, ft_strlen(oi));
+					if(*foi == '-' || *foi == ' ' || *foi == '+')
+					{
+						ni -= (num - ft_strlen(foi)) + 1;
+						*ni = *foi;
+					}
+					else
+						ni -= num - ft_strlen(oi);
+					free(foi);
+					oi = ni;
+				}
+			}
+
+		}
+
+	}
+
+	if(oi != ni)
+		free(oi);
+	return(ni);
+
+}
+

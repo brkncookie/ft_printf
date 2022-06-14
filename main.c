@@ -13,6 +13,8 @@ int main(int argc, char **argv)
 	/* 	printf("format string: '%.*s' length: %d\n", fc->flen[inx], fc->fptr[inx], fc->flen[inx]); */
 
 	ft_printf(argv[1], argv[2], atoi(argv[3]), argv[4], argv[5]);
+	ft_printf("\n");
+	printf(argv[1], argv[2], atoi(argv[3]), argv[4], argv[5]);
 
 	return(0);
 }

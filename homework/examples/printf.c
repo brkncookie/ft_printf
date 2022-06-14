@@ -17,7 +17,7 @@ int main(void)
 
 	printf("\tMin Field Width with 0 flag\n");
 	printf("hex/HEX are %04x/%04X\n",  (unsigned int )*str, (unsigned int )*str);
-	printf("digit is %06d  and integer is %06i and unsigned int is %06u\n", num, num, num);
+	printf("digit is %-6d  and integer is %-6i and unsigned int is %06u\n", num, num, num);
 
 	printf("\tMin Field Width with - flag\n");
 	printf("str is %-14s and char is %-2c\n", str, *str);
@@ -27,7 +27,12 @@ int main(void)
 	printf("\tPrecision\n");
 	printf("str is %.7s\n", str);
 	printf("hex/HEX are %.4x/%.4X\n", (unsigned int )*str, (unsigned int )*str);
-	printf("digit is %.6d  and integer is %.6i and unsigned int is %.6u\n", num, num, num);
+	printf("digit is %.6d and integer is %.6i and unsigned int is %.6u\n", num, num, num);
+
+	printf("\tPrecision with Min Field Width\n");
+	printf("str is %20.7s\n", str);
+	printf("hex/HEX are %5.4x/%5.4X\n", (unsigned int )*str, (unsigned int )*str);
+	printf("digit is %10.6d and integer is %10.6i and unsigned int is %.6u\n", num, num, num);
 
 	printf("\tPrecision with # flag\n");
 	printf("hex/HEX are %#.4x/%#.4X\n", (unsigned int )*str, (unsigned int )*str);
