@@ -136,7 +136,14 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 				free(foi);
 				oi = ni;
 			}
+			else if( num == 0 && *oi == '0')
+			{
+				ni = malloc(sizeof(*ni));
+				*ni = 0;
+				free(oi);
+				oi = ni;
 
+			}
 		}
 		if((ft_strchr(fptr, '+')) && (*oi != '-'))
 		{
@@ -157,12 +164,14 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 			free(oi);
 			oi = ni;
 		}
-
-		if((ptr = ft_strchr(fptr, '1')) || (ptr = ft_strchr(fptr, '2')) || (ptr = ft_strchr(fptr, '3')) \
-				|| (ptr = ft_strchr(fptr, '4')) || (ptr = ft_strchr(fptr, '5')) || (ptr = ft_strchr(fptr, '6')) \
-				|| (ptr = ft_strchr(fptr, '7')) || (ptr = ft_strchr(fptr, '8')) || (ptr = ft_strchr(fptr, '9')))
+		num = 0;
+		while(fptr[num])
 		{
-			num = atoi(ptr);
+			if(fptr[num] == '1' || fptr[num] == '2' || fptr[num] == '3'||  \
+					fptr[num] == '4' || fptr[num] == '5' || fptr[num] == '6' || \
+					fptr[num] == '7' || fptr[num] == '8' || fptr[num] == '9' )
+			{
+			num = atoi(&fptr[num]);
 			if(num > ft_strlen(oi))
 			{
 				pad = num - ft_strlen(oi);
@@ -180,7 +189,7 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 					foi = oi;
 
 				}
-				else if(ft_strchr(fptr, '0'))
+				else if(ft_strchr(fptr, '0') && ptr == NULL)
 				{
 					ni = malloc((num + 1) * sizeof(*ni));
 					ni[num] = 0;
@@ -203,10 +212,35 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 					free(foi);
 					oi = ni;
 				}
+				else
+				{
+
+					ni = malloc((num + 1) * sizeof(*ni));
+					ni[num] = 0;
+					foi = oi;
+					if(*oi == '-' || *oi == ' ' || *oi == '+')
+					{
+						ni++;
+						oi++;
+					}
+					while(pad--)
+						*(ni++) = ' ';
+					ft_memcpy(ni, oi, ft_strlen(oi));
+					if(*foi == '-' || *foi == ' ' || *foi == '+')
+					{
+						ni -= (num - ft_strlen(foi)) + 1;
+						*ni = *foi;
+					}
+					else
+						ni -= num - ft_strlen(oi);
+					free(foi);
+					oi = ni;
+				}
 			}
-
+			break;
+			}
+		num++;
 		}
-
 	}
 
 	if(oi != ni)
