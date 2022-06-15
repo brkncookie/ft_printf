@@ -249,3 +249,100 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 
 }
 
+char	*ft_uns(char *fptr, long int flen, va_list *ap)
+{
+	/* precision, width, - flag, 0 flag, ' ' flag, + flag */
+	char	*ptr;
+	char	*oi;
+	char	*ni;
+	int	num;
+	int 	pad;
+
+	oi = ft_utoa(va_arg(*ap, unsigned int));
+	ni = oi;
+	if(flen > 2)
+	{
+		if((ptr = ft_strchr(fptr, '.')))
+		{
+			num = atoi(ptr+1);
+			if(num > ft_strlen(oi))
+			{
+				pad = num - ft_strlen(oi);
+				ni = malloc((num + 1) * sizeof(*ni));
+				ni[num] = 0;
+				while(pad--)
+					*(ni++) = '0';
+				ft_memcpy(ni, oi, ft_strlen(oi));
+				ni -= num - ft_strlen(oi);
+				free(oi);
+				oi = ni;
+			}
+			else if( num == 0 && *oi == '0')
+			{
+				ni = malloc(sizeof(*ni));
+				*ni = 0;
+				free(oi);
+				oi = ni;
+
+			}
+		}
+		num = 0;
+		while(fptr[num])
+		{
+			if(fptr[num] == '1' || fptr[num] == '2' || fptr[num] == '3'||  \
+					fptr[num] == '4' || fptr[num] == '5' || fptr[num] == '6' || \
+					fptr[num] == '7' || fptr[num] == '8' || fptr[num] == '9' )
+			{
+			num = atoi(&fptr[num]);
+			if(num > ft_strlen(oi))
+			{
+				pad = num - ft_strlen(oi);
+				if(ft_strchr(fptr, '-'))
+				{
+					ni = malloc((num + 1) * sizeof(*ni));
+					ni[num] = 0;
+					ft_memcpy(ni, oi, ft_strlen(oi));
+					ni += ft_strlen(oi);
+					while(pad--)
+						*(ni++) = ' ';
+					ni -= (ft_strlen(oi ) + num - ft_strlen(oi ));
+					free(oi);
+					oi = ni;
+
+				}
+				else if(ft_strchr(fptr, '0') && ptr == NULL)
+				{
+					ni = malloc((num + 1) * sizeof(*ni));
+					ni[num] = 0;
+					while(pad--)
+						*(ni++) = '0';
+					ft_memcpy(ni, oi, ft_strlen(oi));
+					ni -= num - ft_strlen(oi);
+					free(oi);
+					oi = ni;
+				}
+				else
+				{
+
+					ni = malloc((num + 1) * sizeof(*ni));
+					ni[num] = 0;
+					while(pad--)
+						*(ni++) = ' ';
+					ft_memcpy(ni, oi, ft_strlen(oi));
+					ni -= num - ft_strlen(oi);
+					free(oi);
+					oi = ni;
+				}
+			}
+			break;
+			}
+		num++;
+		}
+	}
+
+	if(oi != ni)
+		free(oi);
+	return(ni);
+
+}
+

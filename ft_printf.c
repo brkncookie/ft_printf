@@ -87,9 +87,9 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 			/* case 'X': */
 			/* 	rfs[inx] = ft_HEX(fss->fptr[inx], fss->flen[inx], ap); */
 			/* 	break; */
-			/* case 'u': */
-			/* 	rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap); */
-			/* 	break; */
+			case 'u':
+				rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap);
+				break;
 			case '%':
 				rfs[inx] = ft_strdup("%");
 				break;

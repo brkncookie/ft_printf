@@ -15,6 +15,7 @@ typedef struct s_fsinfo
 
 int	ft_isfs(char c);
 char	*ft_itoa(int n);
+char	*ft_utoa(unsigned int n);
 int 	ft_printf(char *fmt, ...);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
