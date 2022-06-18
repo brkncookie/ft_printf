@@ -4,10 +4,10 @@
 int main(void)
 {
 	char	*str = "one two three";
-	int	num = 512;
+	int	num = 15;
 
 	printf("str is %s and char is %c\n", str, *str);
-	printf("ptr is %p and hex/HEX are %x/%X\n", str, (unsigned int )*str, (unsigned int )*str);
+	printf("ptr is %p and hex/HEX are %x/%X\n", str, num, num);
 	printf("digit is %d  and integer is %i and unsigned int is %u\n", num, num, num);
 
 	printf("\tMin Field Width\n");
