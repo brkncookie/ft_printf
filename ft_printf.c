@@ -81,7 +81,7 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 				rfs[inx] = ft_int(ap);
 				break;
 			case '%':
-				rfs[inx] = ft_strdup("%"):
+				rfs[inx] = ft_strdup("%");
 				break;
 		}
 		if(!(rfs[inx]))
@@ -89,8 +89,8 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 			--inx;
 			while(inx >= 0)
 				free(rfs[inx--]);
-			free(rfs)
-			return(NULL):
+			free(rfs);
+			return(NULL);
 		}
 		inx++;
 	}

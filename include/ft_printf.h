@@ -1,6 +1,7 @@
 #ifndef FT_PRINTF_H
 #define FT_PRINTF_H
 
+#include "../libft/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
@@ -12,8 +13,12 @@ typedef struct s_fsinfo
 	long	int	cnt;
 }	fsinfo;
 
+char	*ft_utoa(unsigned int n);
+char	*ft_i2hx(unsigned int n);
+char	*ft_p2hx(void  *p);
 int 	ft_printf(char *fmt, ...);
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss);
+
 
 char	*ft_str(va_list *ap);
 char	*ft_cha(va_list *ap);

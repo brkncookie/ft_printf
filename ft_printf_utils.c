@@ -1,4 +1,5 @@
 #include "include/ft_printf.h"
+
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 {
 	long	int inx;
@@ -13,49 +14,98 @@ void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 	free(rstr);
 }
 
-char	*ft_str(va_list *ap)
+char	*ft_utoa(unsigned int n)
 {
-	return(ft_strdup(va_arg(*ap, char *)));
-}
+	unsigned	int	i;
+	long		int	l;
+	char			*ic;
 
-char	*ft_cha(va_list *ap)
-{
-	char *c;
-
-	c = malloc(2 * sizeof(*c));
-	if(!c)
+	if(n == 0)
+		return(ft_strdup("0"));
+	i = n;
+	l = 0;
+	while(i)
+	{
+		i /= 10;
+		l++;
+	}
+	ic = malloc((l + 1) * sizeof(*ic));
+	if(!ic)
 		return(NULL);
-	c[0] = (unsigned char)va_arg(*ap, int);
-	c[1] = 0;
-
-	return(c);
+	ic[l] = 0;
+	i = n;
+	while(i)
+	{
+		ic[--l] = "0123456789"[i % 10];
+		i /= 10;
+	}
+	return(ic);
 }
-char	*ft_int(va_list *ap)
-{
-	return(ft_itoa(va_arg(*ap, int)));
-}
 
-char	*ft_uns(va_list *ap)
+char	*ft_i2hx(unsigned int n)
 {
-	return(ft_utoa(va_arg(*ap, unsigned int)));
-}
-char	*ft_hex(va_list *ap, int n)
-{
-	char	*hx;
-	char	*x;
+	unsigned	int	i;
+	long		int	l;
+	char			*hx;
 
-	hx = ft_i2hx(va_arg(*ap, unsigned int));
+	if(n == 0)
+		return(ft_strdup("0"));
+	i = n;
+	l = 0;
+	while(i)
+	{
+		i /= 16;
+		l++;
+	}
+
+	hx = malloc((l+1) * sizeof(*hx));
+
 	if(!hx)
 		return(NULL);
-	if(n)
+
+	hx[l] = 0;
+	i = n;
+
+	while(i)
 	{
-		x = hx;
-		while(x)
-		{
-			if(*x >= 'a' || x <= 'f')
-				*x -= 32;
-			x++;
-		}
+		hx[--l] = "0123456789abcdef"[i % 16];
+		i /= 16;
+	}
+	return(hx);
+}
+
+char	*ft_p2hx(void  *p)
+{
+	unsigned	int	i;
+	unsigned	int	n;
+	long		int	l;
+	char			*hx;
+
+	if(p == NULL)
+		return(ft_strdup("0x0"));
+	n = (long int)p;
+	i = n;
+	l = 2;
+	while(i)
+	{
+		i /= 16;
+		l++;
+	}
+
+	hx = malloc((l+1) * sizeof(*hx));
+
+	if(!hx)
+		return(NULL);
+
+	hx[0] = '0';
+	hx[1] = 'x';
+	hx[l] = 0;
+	i = n;
+
+	while(i)
+	{
+		hx[--l] = "0123456789abcdef"[i % 16];
+		i /= 16;
 	}
 	return(hx);
 }
