@@ -1,49 +1,52 @@
-#include "include/ft_printf.h"
+#include "include/ft_printf_bonus.h"
 
-fsinfo	*ft_fsinfo_init(char	*fmt)
+fsinfo	*ft_fsinfo_init(char *fmt)
 {
-	fsinfo	*fss;
-	char	*hfmt;
+	fsinfo		*fss;
+	char		*hfmt;
 	long	int	inx;
 
 	fss = malloc(sizeof(*fss));
 	if(!fss)
 		return(NULL);
+
 	fss->cnt = 0;
 	hfmt = fmt;
-
 	while((hfmt = ft_strchr(hfmt, '%')))
 	{
 		hfmt++;
-		if(*hfmt == 'c' || *hfmt == 's' || *hfmt == 'p' || *hfmt == 'i' \
-				|| *hfmt == 'd' || *hfmt == 'x' || *hfmt == 'X' || *hfmt == 'u' || *hfmt == '%')
-			fss->cnt++;
+		if(ft_isfs(hfmt))
+		{
+			fss->cnt += 1;
+			hfmt = ft_isfs(hfmt);
+		}
 		if(*hfmt == 0)
 			break;
 		hfmt++;
 	}
-
 	fss->fptr = malloc(fss->cnt * sizeof(*(fss->fptr)));
-	if(!(fss->fptr))
-	{
-		free(fss);
+	fss->flen = malloc(fss->cnt * sizeof(*(fss->flen)));
+	if(!(fss->fptr) || !(fss->flen))
 		return(NULL);
-	}
 	hfmt = fmt;
 	inx = 0;
 	while((hfmt = ft_strchr(hfmt, '%')) && (inx < fss->cnt))
 	{
 		fss->fptr[inx] = hfmt;
+		fss->flen[inx] = 2;
 		hfmt++;
-		if(*hfmt == 'c' || *hfmt == 's' || *hfmt == 'p' || *hfmt == 'i' \
-				|| *hfmt == 'd' || *hfmt == 'x' || *hfmt == 'X' || *hfmt == 'u' || *hfmt == '%')
+		if(ft_isfs(hfmt))
+		{
+			fss->flen[inx] += ft_isfs(hfmt) - hfmt;
+			hfmt = ft_isfs(hfmt);
 			inx++;
+		}
+		if(*hfmt == 0)
+			break;
 		hfmt++;
 	}
 	return(fss);
-
 }
-
 char	**ft_resfs(fsinfo *fss, va_list *ap)
 {
 	char	**rfs;
@@ -56,29 +59,29 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 
 	while(inx < fss->cnt)
 	{
-		switch(fss->fptr[inx][1])
+		switch(fss->fptr[inx][fss->flen[inx]-1])
 		{
 			case 's':
-				rfs[inx] = ft_str(ap);
+				rfs[inx] = ft_str(fss->fptr[inx], fss->flen[inx], ap);
 				break;
 			case 'c':
-				rfs[inx] = ft_cha(ap);
+				rfs[inx] = ft_cha(fss->fptr[inx], fss->flen[inx], ap);
 				break;
 			case 'x':
-				rfs[inx] = ft_hex(ap, 0);
+				rfs[inx] = ft_hex(fss->fptr[inx], fss->flen[inx], ap, 0);
 				break;
 			case 'X':
-				rfs[inx] = ft_hex(ap, 1);
+				rfs[inx] = ft_hex(fss->fptr[inx], fss->flen[inx], ap, 1);
 				break;
 			case 'p':
-				rfs[inx] = ft_ptr(ap);
+				rfs[inx] = ft_ptr(fss->fptr[inx], fss->flen[inx], ap);
 				break;
 			case 'u':
-				rfs[inx] = ft_uns(ap);
+				rfs[inx] = ft_uns(fss->fptr[inx], fss->flen[inx], ap);
 				break;
 			case 'i':
 			case 'd':
-				rfs[inx] = ft_int(ap);
+				rfs[inx] = ft_int(fss->fptr[inx], fss->flen[inx], ap);
 				break;
 			case '%':
 				rfs[inx] = ft_strdup("%");
@@ -108,7 +111,7 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 
 	while(inx < fss->cnt)
 	{
-		rslen -= 2;
+		rslen -= fss->flen[inx];
 		rslen += (long int)ft_strlen(rfs[inx++]);
 	}
 
@@ -131,7 +134,7 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 			{
 				ft_memcpy(rstr, rfs[inx], ft_strlen(rfs[inx]));
 				rstr += ft_strlen(rfs[inx]);
-				fmt  += 2;
+				fmt  += fss->flen[inx];
 				inx++;
 			}
 		}
@@ -145,7 +148,6 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 	*rstr = 0;
 	return(rstr - rslen);
 }
-
 
 int ft_printf(char *fmt, ...)
 {

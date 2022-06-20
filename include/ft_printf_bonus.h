@@ -14,24 +14,17 @@ typedef struct s_fsinfo
 }	fsinfo;
 
 char	*ft_isfs(char *s);
-char	*ft_itoa(int n);
+char	*ft_p2hx(void *p);
 char	*ft_utoa(unsigned int n);
 char	*ft_i2hx(unsigned int n);
-char	*ft_p2hx(void *p);
 int 	ft_printf(char *fmt, ...);
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s);
-char	*ft_strchr(const char *s, int c);
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-void	*ft_memcpy(void *restrict dest, const void *restrict src, size_t n);
 
 char	*ft_str(char *fptr, long int flen, va_list *ap);
 char	*ft_cha(char *fptr, long int flen, va_list *ap);
 char	*ft_ptr(char *fptr, long int flen, va_list *ap);
 char	*ft_int(char *fptr, long int flen, va_list *ap);
-char	*ft_hex(char *fptr, long int flen, va_list *ap);
-char	*ft_HEX(char *fptr, long int flen, va_list *ap);
+char	*ft_hex(char *fptr, long int flen, va_list *ap, int n);
 char	*ft_uns(char *fptr, long int flen, va_list *ap);
 #endif
 

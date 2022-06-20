@@ -37,9 +37,9 @@ char	*ft_hex(va_list *ap, int n)
 	if(n)
 	{
 		x = hx;
-		while(x)
+		while(*x)
 		{
-			if(*x >= 'a' || *x <= 'f')
+			if(*x >= 'a' && *x <= 'f')
 				*x -= 32;
 			x++;
 		}

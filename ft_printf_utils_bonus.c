@@ -1,5 +1,67 @@
-#include "include/ft_printf.h"
+#include "include/ft_printf_bonus.h"
 
+char	*ft_isfs(char	*s)
+{
+	char	*f;
+	char	*n;
+	char	*c;
+	char	*fi;
+	char	*ni;
+	char	*ci;
+
+	f = " 0-+#";
+	n = "0123456789";
+	c = "csdixXup%";
+	fi = f;
+	ni = n;
+	ci = c;
+
+	while(*f && *s)
+	{
+		if(*s == *f)
+		{
+			s++;
+			f = fi;
+		}
+		else
+			f++;
+	}
+
+	while(*n && *s)
+	{
+		if(*s == *n)
+		{
+			s++;
+			n = ni;
+		}
+		else
+			n++;
+	}
+	n = ni;
+	if(*s == '.')
+	{
+		s++;
+		while(*n && *s)
+		{
+			if(*s == *n)
+			{
+				s++;
+				n = ni;
+			}
+			else
+				n++;
+		}
+	}
+
+	while(*c && *s)
+	{
+		if(*s == *c)
+			return(s);
+		else
+			c++;
+	}
+	return(NULL);
+}
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 {
 	long	int inx;
@@ -10,6 +72,7 @@ void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 
 	free(rfs);
 	free(fss->fptr);
+	free(fss->flen);
 	free(fss);
 	free(rstr);
 }
