@@ -18,6 +18,7 @@ char	*ft_p2hx(void *p);
 char	*ft_utoa(unsigned int n);
 char	*ft_i2hx(unsigned int n);
 int 	ft_printf(char *fmt, ...);
+char	*ft_strnchr(const char *s, int c, long int n)
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss);
 
 char	*ft_str(char *fptr, long int flen, va_list *ap);

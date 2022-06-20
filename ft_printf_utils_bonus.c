@@ -173,3 +173,17 @@ char	*ft_p2hx(void  *p)
 	return(hx);
 }
 
+char	*ft_strnchr(const char *s, int c, long int n)
+{
+	while(*s && n)
+	{
+		if(*s == c)
+			return (char *)s;
+		s++;
+		n--;
+	}
+	if(*s == c && n)
+		return (char *)s;
+	return (NULL);
+}
+
