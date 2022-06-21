@@ -7,14 +7,12 @@ char	*ft_isfs(char	*s)
 	char	*c;
 	char	*fi;
 	char	*ni;
-	char	*ci;
 
 	f = " 0-+#";
 	n = "0123456789";
 	c = "csdixXup%";
 	fi = f;
 	ni = n;
-	ci = c;
 
 	while(*f && *s)
 	{
@@ -62,6 +60,7 @@ char	*ft_isfs(char	*s)
 	}
 	return(NULL);
 }
+
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 {
 	long	int inx;

@@ -1,8 +1,9 @@
 SRCS = ft_printf.c ft_printf_utils.c ft_printf_fsf.c
 OBJS = ${SRCS:.c=.o}
-# bSRCS = ft_printf.c ft_printf_utils_bonus.c ft_printf_fsf_bonus.c
-# bOBJS = ${bSRCS:.c=.o}
+bSRCS = ft_printf_bonus.c ft_printf_utils_bonus.c ft_printf_fsf_bonus.c
+bOBJS = ${bSRCS:.c=.o}
 NAME = libftprintf.a
+bNAME = libftprintf_bonus.a
 LIB = libft.a
 CC = gcc
 CFLAGS =  -Wall -Wextra -Werror -g
@@ -15,10 +16,12 @@ MV = mv -v
 $(NAME): $(LIB) $(OBJS)
 	$(AR)   libft/$(LIB) $(OBJS)
 	$(MV) libft/$(LIB) $(NAME)
+bonus:  $(bNAME)
+$(bNAME): $(LIB) $(bOBJS)
+	$(AR)   libft/$(LIB) $(bOBJS)
+	$(MV) libft/$(LIB) $(bNAME)
 $(LIB):
 	$(MK) all
-# bonus: $(OBJS) $(bOBJS)
-# 	$(AR)   $(NAME) $(OBJS) $(bOBJS)
 all: $(NAME)
 clean:
 	$(RM) $(OBJS) $(bOBJS)
