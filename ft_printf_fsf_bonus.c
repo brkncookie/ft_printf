@@ -31,6 +31,9 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 					fptr[num] == '4' || fptr[num] == '5' || fptr[num] == '6' || \
 					fptr[num] == '7' || fptr[num] == '8' || fptr[num] == '9' )
 			{
+				if(num > 0)
+					if(fptr[num-1] == '.')
+						break;
 				num = ft_atoi(&fptr[num]);
 				if(num > (long int)ft_strlen(os))
 				{
@@ -87,6 +90,9 @@ char	*ft_cha(char *fptr, long int flen, va_list *ap)
 					fptr[num] == '4' || fptr[num] == '5' || fptr[num] == '6' || \
 					fptr[num] == '7' || fptr[num] == '8' || fptr[num] == '9' )
 			{
+				if(num > 0)
+					if(fptr[num-1] == '.')
+						break;
 				num = ft_atoi(&fptr[num]);
 				if(num > (long int)ft_strlen(oc))
 				{
@@ -206,8 +212,6 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 					while(pad--)
 						*(ni++) = ' ';
 					ni -= (ft_strlen(oi) + (num - ft_strlen(oi)));
-					free(oi);
-					oi = ni;
 				}
 				else if(ft_strnchr(fptr, '0', flen) && ptr == NULL)
 				{
@@ -229,31 +233,27 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 					}
 					else
 						ni -= num - ft_strlen(oi);
-					free(ptr);
-					oi = ni;
 				}
 				else
 				{
 					ni = malloc((num + 1) * sizeof(*ni));
 					ni[num] = 0;
-					ptr = oi;
-					if(*oi == '-' || *oi == ' ' || *oi == '+')
-					{
-						ni++;
-						oi++;
-					}
+					/* ptr = oi; */
+					/* if(*oi == '-' || *oi == ' ' || *oi == '+') */
+					/* { */
+					/* 	ni++; */
+					/* 	oi++; */
+					/* } */
 					while(pad--)
 						*(ni++) = ' ';
 					ft_memcpy(ni, oi, ft_strlen(oi));
-					if(*ptr == '-' || *ptr == ' ' || *ptr == '+')
-					{
-						ni -= (num - ft_strlen(ptr)) + 1;
-						*ni = *ptr;
-					}
-					else
+					/* if(*ptr == '-' || *ptr == ' ' || *ptr == '+') */
+					/* { */
+					/* 	ni -= (num - ft_strlen(ptr)) + 1; */
+					/* 	*ni = *ptr; */
+					/* } */
+					/* else */
 						ni -= num - ft_strlen(oi);
-					free(ptr);
-					oi = ni;
 
 				}
 			}
@@ -325,8 +325,6 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 					while(pad--)
 						*(nu++) = ' ';
 					nu -= (ft_strlen(ou) + (num - ft_strlen(ou)));
-					free(ou);
-					ou = nu;
 				}
 				else if(ft_strnchr(fptr, '0', flen) && ptr == NULL)
 				{
@@ -336,8 +334,6 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 						*(nu++) = '0';
 					ft_memcpy(nu, ou, ft_strlen(ou));
 					nu -= num - ft_strlen(ou);
-					free(ou);
-					ou = nu;
 				}
 				else
 				{
@@ -347,8 +343,6 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 						*(nu++) = ' ';
 					ft_memcpy(nu, ou, ft_strlen(ou));
 					nu -= num - ft_strlen(ou);
-					free(ou);
-					ou = nu;
 
 				}
 			}
@@ -429,8 +423,6 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 					while(pad--)
 						*(nx++) = ' ';
 					nx -= (ft_strlen(ox) + (num - ft_strlen(ox)));
-					free(ox);
-					ox = nx;
 				}
 				else if(ft_strnchr(fptr, '0', flen) && ptr == NULL)
 				{
@@ -453,8 +445,6 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 					}
 					else
 						nx -= num - ft_strlen(ox);
-					free(ox);
-					ox = nx;
 				}
 				else
 				{
@@ -464,8 +454,6 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 						*(nx++) = ' ';
 					ft_memcpy(nx, ox, ft_strlen(ox));
 					nx -= num - ft_strlen(ox);
-					free(ox);
-					ox = nx;
 
 				}
 			}
@@ -544,8 +532,6 @@ char	*ft_ptr(char *fptr, long int flen, va_list *ap)
 					while(pad--)
 						*(np++) = ' ';
 					np -= (ft_strlen(op ) + (num - ft_strlen(op )));
-					free(op);
-					op = np;
 
 				}
 				else if(ft_strnchr(fptr, '0', flen) && ptr == NULL)
@@ -558,10 +544,9 @@ char	*ft_ptr(char *fptr, long int flen, va_list *ap)
 						*(np++) = '0';
 					ft_memcpy(np, op, ft_strlen(op));
 					np -= (num - ft_strlen(op - 2)) + 2;
+					op -= 2;
 					np[0] = '0';
 					np[1] = 'x';
-					free(op - 2);
-					op = np;
 				}
 				else
 				{
@@ -572,8 +557,6 @@ char	*ft_ptr(char *fptr, long int flen, va_list *ap)
 						*(np++) = ' ';
 					ft_memcpy(np, op, ft_strlen(op));
 					np -= num - ft_strlen(op);
-					free(op);
-					op = np;
 				}
 			}
 			break;
