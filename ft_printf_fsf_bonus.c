@@ -238,22 +238,10 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 				{
 					ni = malloc((num + 1) * sizeof(*ni));
 					ni[num] = 0;
-					/* ptr = oi; */
-					/* if(*oi == '-' || *oi == ' ' || *oi == '+') */
-					/* { */
-					/* 	ni++; */
-					/* 	oi++; */
-					/* } */
 					while(pad--)
 						*(ni++) = ' ';
 					ft_memcpy(ni, oi, ft_strlen(oi));
-					/* if(*ptr == '-' || *ptr == ' ' || *ptr == '+') */
-					/* { */
-					/* 	ni -= (num - ft_strlen(ptr)) + 1; */
-					/* 	*ni = *ptr; */
-					/* } */
-					/* else */
-						ni -= num - ft_strlen(oi);
+					ni -= num - ft_strlen(oi);
 
 				}
 			}
