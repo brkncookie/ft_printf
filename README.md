@@ -5,17 +5,20 @@ Because putnbr and putstr aren’t enough
 This project is pretty straight forward. You will recode printf.
 Fortunetaly you will be able to reuse it in future projects as a legit function of your libft.
 You will mainly learn how to use variadic arguments.
+
 Take a look at the [PDF](https://github.com/brkncookie/ft_printf/raw/brain4main/en.subject_7.pdf)
 
 ## TODOS
 - [ ] review and comment the code.
 - [ ] implement automated tests.
 - [ ] fix errors derived from autmated tests.
-- [x] finish writing the functions that handle each conversion specifier.
+- [x] finish writing the functions which handle each conversion specifier.
 - [x] find solutions to following problems:
-        1-ft_strchr() parses past the format string, because it points to a portion of what is pointed to by "fmt".
-        2-ft_printf parses any format string even if it doesn't respect the format string format.
+-
+	-ft_strchr() parses past the format string, because it points to a portion of what is pointed to by "fmt".
+        -ft_printf parses any format string even if it doesn't respect the format string format.
                                         and much more to explore...
+-
 - [x] implement a Makefile with the ability to link with libft.
 ## Automated Tests
 *N/A*
