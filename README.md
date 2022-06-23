@@ -14,11 +14,8 @@ Take a look at the [PDF](https://github.com/brkncookie/ft_printf/raw/brain4main/
 - [ ] fix errors derived from autmated tests.
 - [x] finish writing the functions which handle each conversion specifier.
 - [x] find solutions to following problems:
--
-	-ft_strchr() parses past the format string, because it points to a portion of what is pointed to by "fmt".
-        -ft_printf parses any format string even if it doesn't respect the format string format.
-                                        and much more to explore...
--
+- ft_strchr() parses past the format string, because it points to a portion of what is pointed to by "fmt".
+- ft_printf parses any format string even if it doesn't respect the format string format.
 - [x] implement a Makefile with the ability to link with libft.
 ## Automated Tests
 *N/A*
