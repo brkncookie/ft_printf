@@ -1,5 +1,6 @@
 #include "include/ft_printf.h"
 
+/* frees every allocation done in the program's lifespan */
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 {
 	long	int inx;
@@ -13,7 +14,7 @@ void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 	free(fss);
 	free(rstr);
 }
-
+/* ft_itoa but for unsigned int data type, used by ft_uns */
 char	*ft_utoa(unsigned int n)
 {
 	unsigned	int	i;
@@ -42,6 +43,7 @@ char	*ft_utoa(unsigned int n)
 	return(ic);
 }
 
+/* convert unsigned int to hexadecimal format, used by ft_hex*/
 char	*ft_i2hx(unsigned int n)
 {
 	unsigned	int	i;
@@ -74,6 +76,7 @@ char	*ft_i2hx(unsigned int n)
 	return(hx);
 }
 
+/* represents a ptr in a hexadecimal format, used by ft_ptr */
 char	*ft_p2hx(void  *p)
 {
 	long		int	i;

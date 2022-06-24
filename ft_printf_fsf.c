@@ -1,5 +1,5 @@
 #include "include/ft_printf.h"
-
+/* all of the functions here are self-explanatory */
 char	*ft_str(va_list *ap)
 {
 	return(ft_strdup(va_arg(*ap, char *)));
