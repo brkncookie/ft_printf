@@ -31,8 +31,8 @@ fsinfo	*ft_fsinfo_init(char	*fmt)
 		return(NULL);
 	}
 	hfmt = fmt;
-	/* save the ptr to each fmt-str while checking it is a valid fmt-str */
 	inx = 0;
+	/* the actual saving of a ptr and length to each fmt-str while also checking it is a valid fmt-str */
 	while((hfmt = ft_strchr(hfmt, '%')) && (inx < fss->cnt))
 	{
 		fss->fptr[inx] = hfmt;
@@ -55,7 +55,7 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 	if(!rfs)
 		return(NULL);
 	inx = 0;
-	/* as the num of the valid fmt-strs is known, we iterate through it */
+	/* given the num of the valid fmt-strs is known, we iterate through it */
 	while(inx < fss->cnt)
 	{
 		/* we then retrieve each last char of the fmt-str which is the conversion specifier that determines which function to call */
@@ -87,7 +87,7 @@ char	**ft_resfs(fsinfo *fss, va_list *ap)
 				rfs[inx] = ft_strdup("%");
 				break;
 		}
-		/* this makes sure that if smtng fails while trying to resolve a fmt-str, we free the prev allocated memory of any succesful resolve operation */
+		/* making sure that if smtng fails while trying to resolve a fmt-str we fail the correct way resulting in no memleaks/wasted resources */
 		if(!(rfs[inx]))
 		{
 			--inx;
@@ -110,7 +110,7 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 
 	inx = 0;
 	rslen = (long int)ft_strlen(fmt);
-	/* this calculates the length of the str when each fmt-str is resolved */
+	/* calculates the length of the str when each fmt-str is resolved */
 	while(inx < fss->cnt)
 	{
 		rslen -= 2;
@@ -127,7 +127,7 @@ char	*ft_buildstr(char *fmt, char **rfs, fsinfo *fss)
 		/* this first condition makes sure we still have resolved fmt-str to copy, and if we don't we just copy the rest of the str */
 		if(inx < fss->cnt)
 		{
-			/* ptr is either pointing to a regular str or to a fmt-str which gets replaced by its resolved result */
+			/* ptr is either pointing to a regular str or to a fmt-str */
 			if(fmt < fss->fptr[inx])
 			{
 				ft_memcpy(rstr, fmt, fss->fptr[inx] - fmt);
@@ -168,7 +168,7 @@ int ft_printf(char *fmt, ...)
 	fss = ft_fsinfo_init(fmt);
 	if(!fss)
 		return(-1);
-	/* if this is true, it means there's no fmt-str or a valid one which results in the program just printing back the given str*/
+	/* if true, it means there's no fmt-strs or a valid one which results in the program just printing back the given str*/
 	if(fss->cnt == 0)
 	{
 		free(fss);
@@ -176,7 +176,6 @@ int ft_printf(char *fmt, ...)
 		return(ft_strlen(fmt));
 	}
 
-	/* we init the va_list struct */
 	va_start(ap, fmt);
 	/* given that we have the needed info about each fmt-str, we go and resolve each fmt-str */
 	rfs = ft_resfs(fss, &ap);
@@ -188,10 +187,9 @@ int ft_printf(char *fmt, ...)
 		return(-3);
 	va_end(ap);
 
-	/* after successfully resolving each fmt-str and putting it in its appropriate place, we then print it and return its length */
+	/* after successfully resolving/building the str, we then print it, return its length and free any used resources */
 	write(1, rstr, ft_strlen(rstr));
 	len = ft_strlen(rstr);
-	/* finally we make sure we leave no memory leaks which is the fancy way of saying "free any used resources" */
 	ft_frall(rstr, rfs, fss);
 	return(len);
 }

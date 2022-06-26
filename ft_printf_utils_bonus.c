@@ -1,5 +1,6 @@
 #include "include/ft_printf_bonus.h"
 
+/* this function check whether the fmt-str given is valid, using order-based checking */
 char	*ft_isfs(char	*s)
 {
 	char	*f;
@@ -14,6 +15,8 @@ char	*ft_isfs(char	*s)
 	fi = f;
 	ni = n;
 
+	/* the logic of this loop repeats in multiple areas in the function */
+	/* it's simply either it or not it, in both cases we proceed to the next loop in the function */
 	while(*f && *s)
 	{
 		if(*s == *f)
@@ -50,7 +53,7 @@ char	*ft_isfs(char	*s)
 				n++;
 		}
 	}
-
+	/* the final segment in the function which determines the real validity of the fmt-str */
 	while(*c && *s)
 	{
 		if(*s == *c)
@@ -61,6 +64,7 @@ char	*ft_isfs(char	*s)
 	return(NULL);
 }
 
+/* frees every allocation done in the program's lifespan */
 void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 {
 	long	int inx;
@@ -76,6 +80,7 @@ void	ft_frall(char *rstr, char **rfs, fsinfo *fss)
 	free(rstr);
 }
 
+/* ft_itoa but for unsigned int data type, used by ft_uns */
 char	*ft_utoa(unsigned int n)
 {
 	unsigned	int	i;
@@ -104,6 +109,7 @@ char	*ft_utoa(unsigned int n)
 	return(ic);
 }
 
+/* convert unsigned int to hexadecimal format, used by ft_hex*/
 char	*ft_i2hx(unsigned int n)
 {
 	unsigned	int	i;
@@ -136,6 +142,7 @@ char	*ft_i2hx(unsigned int n)
 	return(hx);
 }
 
+/* represents a ptr in a hexadecimal format, used by ft_ptr */
 char	*ft_p2hx(void  *p)
 {
 	long		int	i;
@@ -171,7 +178,7 @@ char	*ft_p2hx(void  *p)
 	}
 	return(hx);
 }
-
+/* same as ft_strchr but only operates on 'n' numbers of chars */
 char	*ft_strnchr(const char *s, int c, long int n)
 {
 	while(*s && n)

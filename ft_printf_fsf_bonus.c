@@ -8,10 +8,13 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 	long	int	num;
 	long	int	pad;
 
+	/* 1st retrieve what's given using the appropriate data type */
 	os = ft_strdup(va_arg(*ap, char *));
 	ns = os;
+	/* chack whether we have anything but the conversion specifier to work on */
 	if(flen > 2)
 	{
+		/* looks for precision in the fmt-str */
 		if((pnt = ft_strnchr(fptr, '.', flen)))
 		{
 			num = ft_atoi(pnt + 1);
@@ -24,6 +27,7 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 				os = ns;
 			}
 		}
+		/* looks for minimal field width in the fmt-str */
 		num = 0;
 		while(fptr[num])
 		{
@@ -38,6 +42,7 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 				if(num > (long int)ft_strlen(os))
 				{
 					pad = num - ft_strlen(os);
+					/* search if any flags are given with the minimal field width, and if not just go plain */
 					if(ft_strnchr(fptr, '-', flen))
 					{
 						ns = malloc((num + 1) * sizeof(*ns));
