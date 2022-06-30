@@ -27,7 +27,7 @@ clean:
 	$(RM) $(OBJS) $(bOBJS)
 	$(MK) clean
 fclean:
-	$(RM) $(NAME)  $(OBJS) $(bOBJS)
+	$(RM) $(bNAME) $(NAME)  $(OBJS) $(bOBJS)
 	$(MK) fclean
 re: fclean all
 .PHONY: fclean all re clean

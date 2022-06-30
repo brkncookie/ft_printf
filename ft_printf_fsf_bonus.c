@@ -2,16 +2,17 @@
 
 char	*ft_str(char *fptr, long int flen, va_list *ap)
 {
+	/* precision, width, - flag */
 	char	*ns;
 	char	*os;
 	char	*pnt;
 	long	int	num;
 	long	int	pad;
 
-	/* 1st retrieve what's given using the appropriate data type */
+	/* retrieve from the variable arg list the desired arg using the appropriate data type */
 	os = ft_strdup(va_arg(*ap, char *));
 	ns = os;
-	/* chack whether we have anything but the conversion specifier to work on */
+	/* chack if we have anything else along the conversion specifier to work on */
 	if(flen > 2)
 	{
 		/* looks for precision in the fmt-str */
@@ -42,7 +43,7 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 				if(num > (long int)ft_strlen(os))
 				{
 					pad = num - ft_strlen(os);
-					/* search if any flags are given with the minimal field width, and if not just go plain */
+					/* search if any flags are given with the minimal field width */
 					if(ft_strnchr(fptr, '-', flen))
 					{
 						ns = malloc((num + 1) * sizeof(*ns));
@@ -76,18 +77,22 @@ char	*ft_str(char *fptr, long int flen, va_list *ap)
 
 char	*ft_cha(char *fptr, long int flen, va_list *ap)
 {
+	/* width, - flag */
 	char	*oc;
 	char	*nc;
 	long	int	num;
 	long	int	pad;
 
+
+	/* retrieve from the variable arg list the desired arg using the appropriate data type */
 	oc = malloc(2 * sizeof(*oc));
 	oc[0] = (unsigned char)va_arg(*ap, int);
 	oc[1] = 0;
 	nc = oc;
+	/* chack if we have anything else along the conversion specifier to work on */
 	if(flen > 2)
 	{
-
+		/* looks for minimal field width in the fmt-str */
 		num = 0;
 		while(fptr[num])
 		{
@@ -102,6 +107,7 @@ char	*ft_cha(char *fptr, long int flen, va_list *ap)
 				if(num > (long int)ft_strlen(oc))
 				{
 					pad = num - ft_strlen(oc);
+					/* search if any flags are given with the minimal field width */
 					if(ft_strnchr(fptr, '-', flen))
 					{
 						nc = malloc((num + 1) * sizeof(*nc));
@@ -134,21 +140,25 @@ char	*ft_cha(char *fptr, long int flen, va_list *ap)
 
 char	*ft_int(char *fptr, long int flen, va_list *ap)
 {
-
+	/* precision, '+' flag, ' ' flag, width, '-' flag '0' flag */
 	char	*ptr;
 	char	*oi;
 	char	*ni;
 	long	int	num;
 	long	int 	pad;
 
+	/* retrieve from the variable arg list the desired arg using the appropriate data type */
 	oi = ft_itoa(va_arg(*ap, int));
 	ni = oi;
+	/* chack if we have anything else along the conversion specifier to work on */
 	if(flen > 2)
 	{
+		/* looks for precision in the fmt-str */
 		if((ptr = ft_strnchr(fptr, '.', flen)))
 		{
 			num = ft_atoi(ptr+1);
 			ptr = oi;
+			/* handles the minus sign, as precision doesn't count it */
 			if(*oi == '-')
 			{
 				num++;
@@ -168,6 +178,7 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 				free(ptr);
 				oi = ni;
 			}
+			/* if int is 0 and is given with a precision of 0, return an empty string */
 			else if( num == 0 && *oi == '0')
 			{
 				ni = malloc(sizeof(*ni));
@@ -177,6 +188,7 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 
 			}
 		}
+		/* search for the '+' flag in the fmt-str */
 		if((ft_strnchr(fptr, '+', flen)) && (*oi != '-'))
 		{
 			ni = malloc((ft_strlen(oi) + 2) * sizeof(*ni));
@@ -187,6 +199,7 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 			oi = ni;
 
 		}
+		/* search for the ' ' flag in the fmt-str */
 		else if((ft_strnchr(fptr, ' ', flen)) && (*oi != '-'))
 		{
 			ni = malloc((ft_strlen(oi) + 2) * sizeof(*ni));
@@ -198,6 +211,8 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 
 		}
 		num = 0;
+
+		/* looks for minimal field width in the fmt-str */
 		while(fptr[num])
 		{
 			if(fptr[num] == '1' || fptr[num] == '2' || fptr[num] == '3'||  \
@@ -208,6 +223,7 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 			if(num > (long int)ft_strlen(oi))
 			{
 				pad = num - ft_strlen(oi);
+				/* search if any flags are given with the minimal field width */
 				if(ft_strnchr(fptr, '-', flen))
 				{
 					ni = malloc((num + 1) * sizeof(*ni));
@@ -223,6 +239,7 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 					ni = malloc((num + 1) * sizeof(*ni));
 					ni[num] = 0;
 					ptr = oi;
+					/* handles the minus/plus sign generated through the "+"/" " flags */
 					if(*oi == '-' || *oi == ' ' || *oi == '+')
 					{
 						ni++;
@@ -264,16 +281,20 @@ char	*ft_int(char *fptr, long int flen, va_list *ap)
 char	*ft_uns(char *fptr, long int flen, va_list *ap)
 {
 
+	/* precision,  width, '-' flag '0' flag */
 	char	*ptr;
 	char	*ou;
 	char	*nu;
 	long	int	num;
 	long	int 	pad;
 
+	/* retrieve from the variable arg list the desired arg using the appropriate data type */
 	ou = ft_utoa(va_arg(*ap, int));
 	nu = ou;
+	/* chack if we have anything else along the conversion specifier to work on */
 	if(flen > 2)
 	{
+		/* looks for precision in the fmt-str */
 		if((ptr = ft_strnchr(fptr, '.', flen)))
 		{
 			num = ft_atoi(ptr+1);
@@ -289,6 +310,7 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 				free(ptr);
 				ou = nu;
 			}
+			/* if int is 0 and is given with a precision of 0, return an empty string */
 			else if( num == 0 && *ou == '0')
 			{
 				nu = malloc(sizeof(*nu));
@@ -298,6 +320,7 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 
 			}
 		}
+		/* looks for minimal field width in the fmt-str */
 		num = 0;
 		while(fptr[num])
 		{
@@ -306,6 +329,7 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 					fptr[num] == '7' || fptr[num] == '8' || fptr[num] == '9' )
 			{
 			num = ft_atoi(&fptr[num]);
+			/* search if any flags are given with the minimal field width */
 			if(num > (long int)ft_strlen(ou))
 			{
 				pad = num - ft_strlen(ou);
@@ -352,16 +376,20 @@ char	*ft_uns(char *fptr, long int flen, va_list *ap)
 char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 {
 
+	/* precision, '#' flag,  width, '-' flag '0' flag */
 	char	*ptr;
 	char	*ox;
 	char	*nx;
 	long	int	num;
 	long	int 	pad;
 
+	/* retrieve from the variable arg list the desired arg using the appropriate data type */
 	ox = ft_i2hx(va_arg(*ap, int));
 	nx = ox;
+	/* chack if we have anything else along the conversion specifier to work on */
 	if(flen > 2)
 	{
+		/* looks for precision in the fmt-str */
 		if((ptr = ft_strnchr(fptr, '.', flen)))
 		{
 			num = ft_atoi(ptr+1);
@@ -377,6 +405,7 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 				free(ptr);
 				ox = nx;
 			}
+			/* if int is 0 and is given with a precision of 0, return an empty string */
 			else if( num == 0 && *ox == '0')
 			{
 				nx = malloc(sizeof(*nx));
@@ -386,6 +415,7 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 
 			}
 		}
+		/* search for the '#' flag in the fmt-str */
 		if(ft_strnchr(fptr, '#', flen))
 		{
 			nx = malloc((ft_strlen(ox) + 3) * sizeof(*nx));
@@ -397,6 +427,7 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 			ox = nx;
 		}
 		num = 0;
+		/* looks for minimal field width in the fmt-str */
 		while(fptr[num])
 		{
 			if(fptr[num] == '1' || fptr[num] == '2' || fptr[num] == '3'||  \
@@ -407,6 +438,7 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 			if(num > (long int)ft_strlen(ox))
 			{
 				pad = num - ft_strlen(ox);
+				/* search if any flags are given with the minimal field width */
 				if(ft_strnchr(fptr, '-', flen))
 				{
 					nx = malloc((num + 1) * sizeof(*nx));
@@ -422,6 +454,7 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 					nx = malloc((num + 1) * sizeof(*nx));
 					nx[num] = 0;
 					ptr = ox;
+					/* handles the "0x" prefix */
 					if(*(ox+1) == 'x')
 					{
 						ox += 2;
@@ -460,6 +493,7 @@ char	*ft_hex(char *fptr, long int flen, va_list *ap, int n)
 		free(ox);
 		ox = nx;
 	}
+	/* this differentiate between %x and %X */
 	if(n)
 	{
 		while(*ox)
@@ -481,10 +515,13 @@ char	*ft_ptr(char *fptr, long int flen, va_list *ap)
 	int	num;
 	int 	pad;
 
+	/* retrieve from the variable arg list the desired arg using the appropriate data type */
 	op = ft_p2hx(va_arg(*ap, void *));
 	np = op;
+	/* chack if we have anything else along the conversion specifier to work on */
 	if(flen > 2 && (ft_strncmp(op, "(nil)", ft_strlen(op)) != 0))
 	{
+		/* looks for precision in the fmt-str */
 		if((ptr = ft_strnchr(fptr, '.', flen)))
 		{
 			num = ft_atoi(ptr+1) + 2;
@@ -506,6 +543,7 @@ char	*ft_ptr(char *fptr, long int flen, va_list *ap)
 			}
 		}
 		num = 0;
+		/* looks for minimal field width in the fmt-str */
 		while(fptr[num])
 		{
 			if(fptr[num] == '1' || fptr[num] == '2' || fptr[num] == '3'||  \
@@ -516,6 +554,7 @@ char	*ft_ptr(char *fptr, long int flen, va_list *ap)
 			if(num > (long int)ft_strlen(op))
 			{
 				pad = num - ft_strlen(op);
+				/* search if any flags are given with the minimal field width */
 				if(ft_strnchr(fptr, '-', flen))
 				{
 					np = malloc((num + 1) * sizeof(*np));

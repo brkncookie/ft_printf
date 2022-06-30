@@ -34,6 +34,7 @@ char	*ft_hex(va_list *ap, int n)
 	hx = ft_i2hx(va_arg(*ap, unsigned int));
 	if(!hx)
 		return(NULL);
+	/* this differentiate between %x and %X */
 	if(n)
 	{
 		x = hx;
